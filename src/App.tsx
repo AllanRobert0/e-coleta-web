@@ -1,24 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import "./App.css";
 
-import Header from "./Header";
+import Route from "./routes";
 
 function App() {
-  const [counter, setCounter] = useState(0);
-
-  function handleButtonClick() {
-    setCounter(counter + 1);
-  }
-
-  return (
-    <div>
-      <Header title={`Ecoleta: ${counter}`} />
-      <button type="button" onClick={handleButtonClick}>
-        Increment
-      </button>
-      <h1>Next Level Week</h1>
-    </div>
-  );
+  return <Route />;
 }
 
 export default App;
