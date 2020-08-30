@@ -1,9 +1,9 @@
-import React, { useEffect, useState, ChangeEvent } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState, ChangeEvent, FormEvent } from "react";
+import { Link, useHistory } from "react-router-dom";
 import { FiArrowDownLeft } from "react-icons/fi";
 import axios from "axios";
 
-import { Map, TileLayer, Marker, Popup } from "react-leaflet";
+import { Map, TileLayer, Marker } from "react-leaflet";
 import api from "../../services/api";
 
 import "./styles.css";
@@ -48,19 +48,18 @@ const CreatePoint = () => {
     0,
     0,
   ]);
-
   const [initialPosition, setInitialPosition] = useState<[number, number]>([
     0,
     0,
   ]);
-
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     whatsapp: "",
   });
-
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
+
+  const history = useHistory();
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -130,7 +129,31 @@ const CreatePoint = () => {
 
   }
 
-  function handleSubmit() { }
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+    const { name, email, whatsapp } = formData;
+    const uf = selectedUf;
+    const city = selectedCity;
+    const [latitude, longitude] = selectedPosition;
+    const items = selectedItems;
+
+    const data = {
+      name,
+      email,
+      whatsapp,
+      uf,
+      city,
+      latitude,
+      longitude,
+      items
+    }
+
+    await api.post('point', data);
+    alert("Ponto de Coleta Criado!")
+    history.push('/');
+  }
+
+
   return (
     <div id="page-create-point">
       <header>
